@@ -69,6 +69,7 @@ namespace CPE4020Final_dotNET
             if (_serverThread == null)
             {
                 IPAddress ipAddress = new IPAddress(0);
+                ipAddress = IPAddress.Parse("10.0.0.220");
                 _listener = new TcpListener(ipAddress, 2222);
                 _serverThread = new Thread(ServerHandler);
                 _serverThread.Start();
