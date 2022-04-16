@@ -8,6 +8,7 @@ const char* password = "ngrobo1771"; //Replace with your PW
 
 //Your Domain name with URL path or IP address with path
 String serverName = "http://10.0.0.185:2000/";
+String userID = "luis2";
 
 // the following variables are unsigned longs because the time, measured in
 // milliseconds, will quickly become a bigger number than can be stored in an int.
@@ -37,6 +38,7 @@ const int tmpPin = 34;
 
 int tmpVal;
 float volts;
+float mVolts;
 float tempC;
 float tempF;
 char tempStr[10];
@@ -64,8 +66,9 @@ void loop() {
   // put your main code here, to run repeatedly:
 
   tmpVal = analogRead(tmpPin);
-  volts = tmpVal/1023.0;
-  tempC = (volts - 0.5) * 100;
+  volts = ((tmpVal * 3.3) / (4095)) - 0.5;
+  mVolts = volts * 1000;
+  tempC = mVolts / 10;
   tempF = (tempC * (9/5)) + 32;
   Serial.printf("temp: %.2f deg F\n", tempF);
   sprintf(tempStr, "%.2f", tempF);
@@ -76,7 +79,7 @@ void loop() {
     if(WiFi.status()== WL_CONNECTED){
       HTTPClient http;
 
-      String serverPath = serverName + "?data=" + tempStr;
+      String serverPath = serverName + "?data=" + tempStr + "&user=" + userID;
       
       // Your Domain name with URL path or IP address with path
       http.begin(serverPath.c_str());
