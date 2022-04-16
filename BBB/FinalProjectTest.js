@@ -13,6 +13,7 @@ const PORT = 2000;
 
 var temp = "-9";
 var tempLuis1 = "-9";
+var tempLuis2 = "-9";
 
 console.log("server started");
 
@@ -26,8 +27,8 @@ http.createServer(function (req, res) {
     } else if (req.url === path.normalize('/api/sensor')) {
 
     /**** Return the API call result. Change X0 to your lab group number. Change units:X to either C or F ****/
-    console.log("Displaying to client: " + tempLuis1);
-    res.write("" + tempLuis1);
+    console.log("Displaying to client: Sensor1: " + tempLuis1 + " deg F\nSensor2: " + tempLuis2 + " deg F");
+    res.write("Sensor1: " + tempLuis1 + " deg F\nSensor2: " + tempLuis2 + " deg F");
     res.end();
     
     } else {
@@ -39,7 +40,8 @@ http.createServer(function (req, res) {
     /*Return the year and month from the query object:*/
     var txt = q.data + " " + q.user;
     console.log(txt);
-    if ((q.data > 0) && (q.user == "luis1")) { tempLuis1 = q.data; console.log("user verified") };
-    res.end(txt);
+    if ((q.data > 0) && (q.user == "luis1")) { tempLuis1 = q.data; console.log("user1 verified") }
+    else if ((q.data > 0) && (q.user == "luis2")) { tempLuis2 = q.data; console.log("user2 verified") }
+    res.end("Page not found");
     }
 }).listen(PORT,HOST);
