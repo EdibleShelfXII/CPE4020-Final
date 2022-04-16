@@ -27,8 +27,8 @@ http.createServer(function (req, res) {
     } else if (req.url === path.normalize('/api/sensor')) {
 
     /**** Return the API call result. Change X0 to your lab group number. Change units:X to either C or F ****/
-    console.log("Displaying to client: Sensor1: " + tempLuis1 + " deg F\nSensor2: " + tempLuis2 + " deg F");
-    res.write("Sensor1: " + tempLuis1 + " deg F\nSensor2: " + tempLuis2 + " deg F");
+    console.log("Displaying to client: Sensor1: user:luis1:" + tempLuis1 + ",user:luis2:" + tempLuis2);
+    res.write("user:luis1:" + tempLuis1 + ",user:luis2:" + tempLuis2);
     res.end();
     
     } else {
