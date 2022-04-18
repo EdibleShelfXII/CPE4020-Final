@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CPE4020Final-dotNET", "CPE4020Final-dotNET\CPE4020Final-dotNET.csproj", "{44CC349D-9AAA-4436-8201-D7384E2D7369}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{44CC349D-9AAA-4436-8201-D7384E2D7369}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44CC349D-9AAA-4436-8201-D7384E2D7369}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44CC349D-9AAA-4436-8201-D7384E2D7369}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44CC349D-9AAA-4436-8201-D7384E2D7369}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5E6B3DC7-1724-45BA-AD28-9C04832580B3}
+	EndGlobalSection
+EndGlobal
