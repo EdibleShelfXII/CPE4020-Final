@@ -14,6 +14,11 @@ const PORT = 2000;
 var temp = "-9";
 var tempLuis1 = "-9";
 var tempLuis2 = "-9";
+var tempArafat1 = "-9";
+var tempArafat2 = "-9";
+var tempIsaac1 = "-9";
+var tempIsaac2 = "-9";
+
 
 console.log("server started");
 
@@ -27,8 +32,8 @@ http.createServer(function (req, res) {
     } else if (req.url === path.normalize('/api/sensor')) {
 
     /**** Return the API call result. Change X0 to your lab group number. Change units:X to either C or F ****/
-    console.log("Displaying to client: Sensor1: user:luis1:" + tempLuis1 + ",user:luis2:" + tempLuis2);
-    res.write("user:luis1:" + tempLuis1 + ",user:luis2:" + tempLuis2);
+    console.log("Displaying to client: Sensor1: user:luis1:" + tempLuis1 + ",user:luis2:" + tempLuis2 + ",user:arafat1:" + tempArafat1 + ",user:arafat2:" + tempArafat2 + ",user:isaac1:" + tempIsaac1 + ",user:isaac2:" + tempIsaac2);
+    res.write("user:luis1:" + tempLuis1 + ",user:luis2:" + tempLuis2 + ",user:arafat1:" + tempArafat1 + ",user:arafat2:" + tempArafat2 + ",user:isaac1:" + tempIsaac1 + ",user:isaac2:" + tempIsaac2);
     res.end();
     
     } else {
@@ -42,6 +47,10 @@ http.createServer(function (req, res) {
     console.log(txt);
     if ((q.data > 0) && (q.user == "luis1")) { tempLuis1 = q.data; console.log("user1 verified") }
     else if ((q.data > 0) && (q.user == "luis2")) { tempLuis2 = q.data; console.log("user2 verified") }
+    else if ((q.data > 0) && (q.user == "arafat1")) { tempArafat1 = q.data; console.log("user3 verified") }
+    else if ((q.data > 0) && (q.user == "arafat2")) { tempArafat2 = q.data; console.log("user4 verified") }
+    else if ((q.data > 0) && (q.user == "isaac1")) { tempisaac1 = q.data; console.log("user5 verified") }
+    else if ((q.data > 0) && (q.user == "isaac2")) { tempisaac2 = q.data; console.log("user6 verified") }
     res.end("Page not found");
     }
 }).listen(PORT,HOST);

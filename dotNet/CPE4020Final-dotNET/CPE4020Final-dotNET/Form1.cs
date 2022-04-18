@@ -19,8 +19,7 @@ namespace CPE4020Final_dotNET
     public partial class Form1 : Form
     {
 
-        //   luis1 luis2 other1 other2
-        string[] sensors = { "", "", "", "" };
+        string[] sensors = { "", "", "", "", "", "" };
 
         Thread _serverThread = null;
         TcpListener _listener;
@@ -34,6 +33,10 @@ namespace CPE4020Final_dotNET
             button2.Text = "Stop API";
             label1.Text = ("temp sensor 1: null");
             label2.Text = ("temp sensor 2: null");
+            label4.Text = ("temp sensor 3: null");
+            label5.Text = ("temp sensor 4: null");
+            label6.Text = ("temp sensor 5: null");
+            label7.Text = ("temp sensor 6: null");
             label3.Text = ("API off");
         }
 
@@ -129,6 +132,22 @@ namespace CPE4020Final_dotNET
                                     sensors[1] = data;
                                     break;
 
+                                case "arafat1":
+                                    sensors[2] = data;
+                                    break;
+
+                                case "arafat2":
+                                    sensors[3] = data;
+                                    break;
+
+                                case "isaac1":
+                                    sensors[4] = data;
+                                    break;
+
+                                case "isaac2":
+                                    sensors[5] = data;
+                                    break;
+
                                 default:
                                     break;
 
@@ -138,7 +157,10 @@ namespace CPE4020Final_dotNET
                 }
                 label1.Text = ("temp sensor 1: " + sensors[0]);
                 label2.Text = ("temp sensor 2: " + sensors[1]);
-
+                label4.Text = ("temp sensor 3: " + sensors[2]);
+                label5.Text = ("temp sensor 4: " + sensors[3]);
+                label6.Text = ("temp sensor 5: " + sensors[4]);
+                label7.Text = ("temp sensor 6: " + sensors[5]);
             }
             catch (WebException ee)
             {
@@ -179,7 +201,7 @@ namespace CPE4020Final_dotNET
                     responseBuilder.AppendLine("HTTP/1.1 200 OK");
                     responseBuilder.AppendLine("Content-Type: text/html");
                     responseBuilder.AppendLine();
-                    responseBuilder.AppendLine("<html><head><title>CPE4020 Final Project</title></head><body>CPE 4020 Final Project<br>Sensor1: " + sensors[0] + "<br>Sensor2: " + sensors[1] + "</body></html>");
+                    responseBuilder.AppendLine("<html><head><title>CPE4020 Final Project</title></head><body>CPE 4020 Final Project<br>Luis1: " + sensors[0] + "<br>Luis2: " + sensors[1] + "<br>Arafat1: " + sensors[2] + "<br>Arafat2: " + sensors[3] + "<br>Isaac1: " + sensors[4] + "<br>Isaac2: " + sensors[5] + "</body></html>");
                     responseBuilder.AppendLine("");
                     var responseString = responseBuilder.ToString();
                     var responseBytes = Encoding.UTF8.GetBytes(responseString);
