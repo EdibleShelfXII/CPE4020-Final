@@ -29,11 +29,32 @@ http.createServer(function (req, res) {
 
     res.end("0");
 
-    } else if (req.url === path.normalize('/api/sensor')) {
+    } else if (req.url === path.normalize('/api/sensor/all')) {
 
     /**** Return the API call result. Change X0 to your lab group number. Change units:X to either C or F ****/
-    console.log("Displaying to client: Sensor1: user:luis1:" + tempLuis1 + ",user:luis2:" + tempLuis2 + ",user:arafat1:" + tempArafat1 + ",user:arafat2:" + tempArafat2 + ",user:isaac1:" + tempIsaac1 + ",user:isaac2:" + tempIsaac2);
+    console.log("Displaying to client: user:luis1:" + tempLuis1 + ",user:luis2:" + tempLuis2 + ",user:arafat1:" + tempArafat1 + ",user:arafat2:" + tempArafat2 + ",user:isaac1:" + tempIsaac1 + ",user:isaac2:" + tempIsaac2);
     res.write("user:luis1:" + tempLuis1 + ",user:luis2:" + tempLuis2 + ",user:arafat1:" + tempArafat1 + ",user:arafat2:" + tempArafat2 + ",user:isaac1:" + tempIsaac1 + ",user:isaac2:" + tempIsaac2);
+    res.end();
+    
+    } else if (req.url === path.normalize('/api/sensor/luis')) {
+
+    /**** Return the API call result. Change X0 to your lab group number. Change units:X to either C or F ****/
+    console.log("Displaying to client: user:luis1:" + tempLuis1 + ",user:luis2:" + tempLuis2);
+    res.write("user:luis1:" + tempLuis1 + ",user:luis2:" + tempLuis2);
+    res.end();
+    
+    } else if (req.url === path.normalize('/api/sensor/arafat')) {
+
+    /**** Return the API call result. Change X0 to your lab group number. Change units:X to either C or F ****/
+    console.log("Displaying to client: user:arafat1:" + tempArafat1 + ",user:arafat2:" + tempArafat2);
+    res.write("user:arafat1:" + tempArafat1 + ",user:arafat2:" + tempArafat2);
+    res.end();
+    
+    } else if (req.url === path.normalize('/api/sensor/isaac')) {
+
+    /**** Return the API call result. Change X0 to your lab group number. Change units:X to either C or F ****/
+    console.log("Displaying to client: user:isaac1:" + tempIsaac1 + ",user:isaac2:" + tempIsaac2);
+    res.write("user:isaac1:" + tempIsaac1 + ",user:isaac2:" + tempIsaac2);
     res.end();
     
     } else {
@@ -49,8 +70,9 @@ http.createServer(function (req, res) {
     else if ((q.data > 0) && (q.user == "luis2")) { tempLuis2 = q.data; console.log("user2 verified") }
     else if ((q.data > 0) && (q.user == "arafat1")) { tempArafat1 = q.data; console.log("user3 verified") }
     else if ((q.data > 0) && (q.user == "arafat2")) { tempArafat2 = q.data; console.log("user4 verified") }
-    else if ((q.data > 0) && (q.user == "isaac1")) { tempisaac1 = q.data; console.log("user5 verified") }
-    else if ((q.data > 0) && (q.user == "isaac2")) { tempisaac2 = q.data; console.log("user6 verified") }
+    else if ((q.data > 0) && (q.user == "isaac1")) { tempIsaac1 = q.data; console.log("user5 verified") }
+    else if ((q.data > 0) && (q.user == "isaac2")) { tempIsaac2 = q.data; console.log("user6 verified") }
+    else { console.log("not verified"); }
     res.end("Page not found");
     }
 }).listen(PORT,HOST);

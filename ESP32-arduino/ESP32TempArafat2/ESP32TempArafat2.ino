@@ -7,7 +7,7 @@ const char* ssid = "..."; //Replace with your SSID
 const char* password = "..."; //Replace with your PW
 
 //Your Domain name with URL path or IP address with path
-String serverName = "http://10.0.0.185:2000/";
+String serverName = "http://73.7.0.139:2000/";
 String userID = "arafat2";
 
 // the following variables are unsigned longs because the time, measured in
