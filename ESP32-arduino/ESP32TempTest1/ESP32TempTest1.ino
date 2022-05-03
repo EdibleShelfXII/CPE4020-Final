@@ -8,7 +8,7 @@ const char* password = "ngrobo1771"; //Replace with your PW
 
 //Your Domain name with URL path or IP address with path
 String serverName = "http://10.0.0.185:2000/";
-String userID = "test1";
+String userID = "luis1";
 
 // the following variables are unsigned longs because the time, measured in
 // milliseconds, will quickly become a bigger number than can be stored in an int.

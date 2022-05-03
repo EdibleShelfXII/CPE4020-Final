@@ -20,6 +20,8 @@ namespace CPE4020Final_dotNET
     {
 
         string[] sensors = { "", "", "", "", "", "" };
+        string[] statuses = { "", "", "", "", "", "" };
+        string[] alerts = { "ALERT!, Refrigerator temp went over safe limit", "ALERT!, Freezer temp went over safe limit" };
 
         Thread _serverThread = null;
         TcpListener _listener;
@@ -51,6 +53,7 @@ namespace CPE4020Final_dotNET
         IPAddress localaddr = IPAddress.Parse("10.0.0.220");
 
         String webAddr1 = "10.0.0.185:2000";
+        String webAddr2 = "99.108.0.74:2000"; //Isaac's BBB
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -98,7 +101,7 @@ namespace CPE4020Final_dotNET
             // Download data.
             try
             {
-                byte[] arr = client.DownloadData("http://" + webAddr1 + "/api/sensor");
+                byte[] arr = client.DownloadData("http://" + webAddr1 + "/api/sensor/all");
 
                 // Write values.
                 string resp = Encoding.UTF8.GetString(arr);
@@ -140,6 +143,53 @@ namespace CPE4020Final_dotNET
                                     sensors[3] = data;
                                     break;
 
+                                default:
+                                    break;
+
+                            }
+                        }
+                    }
+                }
+                label1.Text = ("temp sensor 1: " + sensors[0]);
+                label2.Text = ("temp sensor 2: " + sensors[1]);
+                label4.Text = ("temp sensor 3: " + sensors[2]);
+                label5.Text = ("temp sensor 4: " + sensors[3]);
+                label6.Text = ("temp sensor 5: " + sensors[4]);
+                label7.Text = ("temp sensor 6: " + sensors[5]);
+            }
+            catch (WebException ee)
+            {
+
+            }
+
+            try
+            {
+                byte[] arr = client.DownloadData("http://" + webAddr2 + "/api/sensor/all");
+
+                // Write values.
+                string resp = Encoding.UTF8.GetString(arr);
+                Console.WriteLine(resp);
+                String user = null;
+                String data = null;
+
+                //example: "user:luis1:17.71,user:luis2:45.09"
+                string[] parameters = resp.Split(',');
+                foreach (string parameter in parameters)
+                {
+                    string[] keypair = parameter.Split(':');
+
+                    if (keypair[0].Equals("user"))
+                    {
+                        user = keypair[1];
+                        data = keypair[2];
+                    }
+
+                    if (user != null)
+                    {
+                        if (data != null)
+                        {
+                            switch (user)
+                            {
                                 case "isaac1":
                                     sensors[4] = data;
                                     break;
@@ -161,6 +211,52 @@ namespace CPE4020Final_dotNET
                 label5.Text = ("temp sensor 4: " + sensors[3]);
                 label6.Text = ("temp sensor 5: " + sensors[4]);
                 label7.Text = ("temp sensor 6: " + sensors[5]);
+            }
+            catch (WebException ee)
+            {
+
+            }
+
+            try
+            {
+                for (int i = 0; i < 6; i++)
+                {
+                    if (sensors[i] != null)
+                    {
+
+                        decimal numval = decimal.Parse(sensors[i]);
+                        switch (i)
+                        {
+                            case 0:
+                                if (numval > 40) { statuses[i] = alerts[0]; }
+                                break;
+
+                            case 1:
+                                if (numval > 32) { statuses[i] = alerts[1]; }
+                                break;
+
+                            case 2:
+                                if (numval > 40) { statuses[i] = alerts[0]; }
+                                break;
+
+                            case 3:
+                                if (numval > 32) { statuses[i] = alerts[1]; }
+                                break;
+
+                            case 4:
+                                if (numval > 32) { statuses[i] = alerts[1]; }
+                                break;
+
+                            case 5:
+                                if (numval > 40) { statuses[i] = alerts[0]; }
+                                break;
+
+                            default:
+                                break;
+
+                        }
+                    }
+                }
             }
             catch (WebException ee)
             {
@@ -201,7 +297,7 @@ namespace CPE4020Final_dotNET
                     responseBuilder.AppendLine("HTTP/1.1 200 OK");
                     responseBuilder.AppendLine("Content-Type: text/html");
                     responseBuilder.AppendLine();
-                    responseBuilder.AppendLine("<html><head><title>CPE4020 Final Project</title></head><body>CPE 4020 Final Project<br>Luis1: " + sensors[0] + "<br>Luis2: " + sensors[1] + "<br>Arafat1: " + sensors[2] + "<br>Arafat2: " + sensors[3] + "<br>Isaac1: " + sensors[4] + "<br>Isaac2: " + sensors[5] + "</body></html>");
+                    responseBuilder.AppendLine("<html><head><title>CPE4020 Final Project</title></head><body>CPE 4020 Final Project<br><br>Luis & Arafat's Home:<br>  Refrigerator 1: " + sensors[0] + " " + statuses[0] + "<br>  Freezer 1: " + sensors[1] + " " + statuses[1] + "<br>  Refrigerator 2: " + sensors[2] + " " + statuses[2] + "<br>  Freezer 2: " + sensors[3] + " " + statuses[3] + "<br><br>Isaac's Home<br>  Refrigerator 1: " + sensors[5] + " " + statuses[5] + "<br>  Freezer 1: " + sensors[4] + " " + statuses[4] + "</body></html>");
                     responseBuilder.AppendLine("");
                     var responseString = responseBuilder.ToString();
                     var responseBytes = Encoding.UTF8.GetBytes(responseString);
