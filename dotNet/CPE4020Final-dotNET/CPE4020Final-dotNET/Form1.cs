@@ -19,9 +19,9 @@ namespace CPE4020Final_dotNET
     public partial class Form1 : Form
     {
 
-        string[] sensors = { "", "", "", "", "", "" };
-        string[] statuses = { "", "", "", "", "", "" };
-        string[] alerts = { "ALERT!, Refrigerator temp went over safe limit", "ALERT!, Freezer temp went over safe limit" };
+        string[] sensors = { "", "", "", "", "", "" }; // sensor data
+        string[] statuses = { "", "", "", "", "", "" }; // sensor status
+        string[] alerts = { "ALERT!, Refrigerator temp went over safe limit", "ALERT!, Freezer temp went over safe limit" }; // alert string options
 
         Thread _serverThread = null;
         TcpListener _listener;
@@ -29,7 +29,7 @@ namespace CPE4020Final_dotNET
         public Form1()
         {
 
-
+            //Init all button and label text
             InitializeComponent();
             button1.Text = "Start API";
             button2.Text = "Stop API";
@@ -49,14 +49,16 @@ namespace CPE4020Final_dotNET
         WebClient client = null;
         Thread t = null;
 
+        // Init webserver IP and port
         Int32 port = 2222;
         IPAddress localaddr = IPAddress.Parse("10.0.0.220");
 
-        String webAddr1 = "10.0.0.185:2000";
+        String webAddr1 = "10.0.0.185:2000"; // Luis & Arafat's BBB
         String webAddr2 = "99.108.0.74:2000"; //Isaac's BBB
 
         private void button1_Click(object sender, EventArgs e)
         {
+            // Start timer and webserver on start API button press
             timer1.Start();
             Start();
             label3.Text = ("API on");
@@ -64,6 +66,7 @@ namespace CPE4020Final_dotNET
 
         private void button2_Click(object sender, EventArgs e)
         {
+            // Stop timer and webserver on stop API button press
             timer1.Stop();
             Stop();
             label3.Text = ("API off");
@@ -72,6 +75,7 @@ namespace CPE4020Final_dotNET
 
         public void Start(int port = 2222)
         {
+            //start webserver
             if (_serverThread == null)
             {
                 IPAddress ipAddress = new IPAddress(0);
@@ -84,6 +88,7 @@ namespace CPE4020Final_dotNET
 
         public void Stop()
         {
+            // stop webserver
             if (_serverThread != null)
             {
                 _serverThread.Abort();
@@ -101,7 +106,7 @@ namespace CPE4020Final_dotNET
             // Download data.
             try
             {
-                byte[] arr = client.DownloadData("http://" + webAddr1 + "/api/sensor/all");
+                byte[] arr = client.DownloadData("http://" + webAddr1 + "/api/sensor/all"); //API call for all users data
 
                 // Write values.
                 string resp = Encoding.UTF8.GetString(arr);
@@ -109,6 +114,7 @@ namespace CPE4020Final_dotNET
                 String user = null;
                 String data = null;
 
+                // Parse downloaded data string
                 //example: "user:luis1:17.71,user:luis2:45.09"
                 string[] parameters = resp.Split(',');
                 foreach (string parameter in parameters)
@@ -117,6 +123,7 @@ namespace CPE4020Final_dotNET
 
                     if (keypair[0].Equals("user"))
                     {
+                        // store raw data
                         user = keypair[1];
                         data = keypair[2];
                     }
@@ -125,7 +132,7 @@ namespace CPE4020Final_dotNET
                     {
                         if (data != null)
                         {
-                            switch (user)
+                            switch (user) // sort downloaded data
                             {
                                 case "luis1":
                                     sensors[0] = data;
@@ -150,6 +157,7 @@ namespace CPE4020Final_dotNET
                         }
                     }
                 }
+                // update realtime dasboard
                 label1.Text = ("temp sensor 1: " + sensors[0]);
                 label2.Text = ("temp sensor 2: " + sensors[1]);
                 label4.Text = ("temp sensor 3: " + sensors[2]);
@@ -164,7 +172,7 @@ namespace CPE4020Final_dotNET
 
             try
             {
-                byte[] arr = client.DownloadData("http://" + webAddr2 + "/api/sensor/all");
+                byte[] arr = client.DownloadData("http://" + webAddr2 + "/api/sensor/all"); //API call for all users data
 
                 // Write values.
                 string resp = Encoding.UTF8.GetString(arr);
@@ -172,6 +180,7 @@ namespace CPE4020Final_dotNET
                 String user = null;
                 String data = null;
 
+                // Parse downloaded data string
                 //example: "user:luis1:17.71,user:luis2:45.09"
                 string[] parameters = resp.Split(',');
                 foreach (string parameter in parameters)
@@ -180,6 +189,7 @@ namespace CPE4020Final_dotNET
 
                     if (keypair[0].Equals("user"))
                     {
+                        //store raw data
                         user = keypair[1];
                         data = keypair[2];
                     }
@@ -188,7 +198,7 @@ namespace CPE4020Final_dotNET
                     {
                         if (data != null)
                         {
-                            switch (user)
+                            switch (user) // sort downloaded data
                             {
                                 case "isaac1":
                                     sensors[4] = data;
@@ -205,6 +215,8 @@ namespace CPE4020Final_dotNET
                         }
                     }
                 }
+
+                // update realtime dasboard
                 label1.Text = ("temp sensor 1: " + sensors[0]);
                 label2.Text = ("temp sensor 2: " + sensors[1]);
                 label4.Text = ("temp sensor 3: " + sensors[2]);
@@ -219,6 +231,7 @@ namespace CPE4020Final_dotNET
 
             try
             {
+                // Logic for attaching temperature status alert
                 for (int i = 0; i < 6; i++)
                 {
                     if (sensors[i] != null)
@@ -293,6 +306,7 @@ namespace CPE4020Final_dotNET
                 {
                     var request = ReadRequest(stream);
 
+                    // Build html webpage 
                     var responseBuilder = new StringBuilder();
                     responseBuilder.AppendLine("HTTP/1.1 200 OK");
                     responseBuilder.AppendLine("Content-Type: text/html");

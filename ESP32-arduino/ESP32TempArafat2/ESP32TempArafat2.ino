@@ -1,13 +1,9 @@
-// Load Wi-Fi library
-#include <WiFi.h>
-#include <HTTPClient.h>
-
 // Replace with your network credentials
-const char* ssid = "..."; //Replace with your SSID
-const char* password = "..."; //Replace with your PW
+const char* ssid = "North Gwinnett Robotics"; //Replace with your SSID
+const char* password = "ngrobo1771"; //Replace with your PW
 
 //Your Domain name with URL path or IP address with path
-String serverName = "http://73.7.0.139:2000/";
+String serverName = "http://10.0.0.185:2000/";
 String userID = "arafat2";
 
 // the following variables are unsigned longs because the time, measured in
@@ -34,8 +30,9 @@ const long timeoutTime = 2000;
 
 unsigned char testVar = 1771;
 
-const int tmpPin = 34;
+const int tmpPin = 34; // init analog in GPIO pin
 
+// init temeprature variables
 int tmpVal;
 float tmpPct;
 float volts;
@@ -66,13 +63,13 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
-  tmpVal = analogRead(tmpPin);
-  volts = ((tmpVal * 3.8) / 4095) - 0.5;
-  mVolts = volts * 1000;
-  tempC = mVolts / 10;
-  tempF = ((tempC * 9) / 5) + 32;
-  Serial.printf("temp: %.2f deg F\n", tempF);
-  sprintf(tempStr, "%.2f", tempF);
+  tmpVal = analogRead(tmpPin); // read analog input
+  volts = ((tmpVal * 3.8) / 4095) - 0.5; // convert to volts
+  mVolts = volts * 1000; // convert to mV
+  tempC = mVolts / 10; // convert to  deg C
+  tempF = ((tempC * 9) / 5) + 32; // deg C to deg F
+  Serial.printf("temp: %.2f deg F\n", tempF); // data output
+  sprintf(tempStr, "%.2f", tempF); // convert data to string for API call
 
   //Send an HTTP POST request every 10 sec
   if ((millis() - lastTime) > timerDelay) {
@@ -80,7 +77,7 @@ void loop() {
     if(WiFi.status()== WL_CONNECTED){
       HTTPClient http;
 
-      String serverPath = serverName + "?data=" + tempStr + "&user=" + userID;
+      String serverPath = serverName + "?data=" + tempStr + "&user=" + userID; // API call format
       
       // Your Domain name with URL path or IP address with path
       http.begin(serverPath.c_str());
